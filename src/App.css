@@ -686,6 +686,30 @@ body {
 .comment-list { max-height: 180px; overflow-y: auto; }
 .comment-item { padding: .5rem; background: rgba(0,0,0,0.03); border-radius: 6px; }
 
+/* Mobile-friendly audio player adjustments */
+@media (max-width: 576px) {
+  .audio-player-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .episode-info {
+    flex: 0 0 auto;
+    min-width: 0;
+    gap: 0.6rem;
+  }
+  .episode-thumbnail { width: 44px; height: 44px; }
+  .episode-title { font-size: 0.95rem; }
+  .player-controls { flex-direction: row; gap: 0.6rem; align-items: center; }
+  .progress-container { order: 3; width: 100%; }
+  .progress-bar-container { height: 8px; }
+  .play-pause-btn { width: 48px; height: 48px; }
+  .interaction-controls { display: none; }
+  .comments-panel { display: none; width: 100%; }
+  .audio-player-container { padding-bottom: env(safe-area-inset-bottom); }
+}
+
 
 
 .volume-btn:hover {

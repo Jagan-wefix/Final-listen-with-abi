@@ -76,36 +76,34 @@ const Homepage = ({ audioPlayer }) => {
   const navigate = useNavigate();
 
   const handleHeroPlay = () => {
-    // Play latest Spotify episode if available, else fall back to featured/web episode
+    // Play latest Spotify episode if available (only if it has a direct mp3), otherwise fall back to the featured web episode
     const sp = spotifyLatest && spotifyLatest.length > 0 ? spotifyLatest[0] : null;
-    if (sp) {
-      // if we have a direct mp3, play it; otherwise navigate to Spotify Fire page
-      if (sp.mp3Url) {
-        const target = {
-          id: sp.id,
-          title: sp.title,
-          description: sp.description,
-          audioUrl: sp.mp3Url,
-          thumbnail: sp.image || podcastInfo.cover || '',
-        }
-        const isCurrentEpisode = currentEpisode?.id === target?.id;
-        const isCurrentlyPlaying = isCurrentEpisode && isPlaying;
-        if (isCurrentlyPlaying) {
-          pause();
-        } else {
-          play(target);
-        }
-        return;
-      } else {
-        // no direct mp3 available — take user to Spotify page
-        navigate('/spotify-fire');
-        return;
+    if (sp && sp.mp3Url) {
+      const target = {
+        id: sp.id,
+        title: sp.title,
+        description: sp.description,
+        audioUrl: sp.mp3Url,
+        thumbnail: sp.image || podcastInfo.cover || '',
       }
+      const isCurrentEpisode = currentEpisode?.id === target?.id;
+      const isCurrentlyPlaying = isCurrentEpisode && isPlaying;
+      if (isCurrentlyPlaying) {
+        pause();
+      } else {
+        play(target);
+      }
+      return;
     }
 
-    // fallback
+    // fallback to featured web episode (preferred for in-app playback)
     const target = featuredEpisode;
-    if (!target) return;
+    if (!target) {
+      // if we have no web episode but there's a spotify feed, take the user to the Spotify page
+      if (sp) navigate('/spotify-fire');
+      return;
+    }
+
     const isCurrentEpisode = currentEpisode?.id === target?.id;
     const isCurrentlyPlaying = isCurrentEpisode && isPlaying;
 
@@ -153,9 +151,6 @@ const Homepage = ({ audioPlayer }) => {
                   <div className="mt-4">
                     <Card className="p-3 latest-thought-card">
                       <div className="d-flex align-items-start gap-3">
-                        <div style={{minWidth: 56}}>
-                          <div className="thought-thumb" style={{width:56,height:56,borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700}}>{(latestThought.title||'T').slice(0,2).toUpperCase()}</div>
-                        </div>
                         <div className="flex-grow-1">
                           <h5 className="mb-1">{latestThought.title}</h5>
                           <div className="text-muted small mb-2">{latestThought.createdAt && latestThought.createdAt.toDate ? latestThought.createdAt.toDate().toLocaleDateString() : ''}</div>
