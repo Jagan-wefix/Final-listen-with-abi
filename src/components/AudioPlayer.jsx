@@ -124,7 +124,7 @@ const AudioPlayer = ({
 
             <div className="interaction-controls">
               <button className={`interaction-btn like-btn ${interactions[currentEpisode.id]?.liked ? 'liked' : ''}`} onClick={() => toggleLike(currentEpisode.id)} title="Like">
-                <Hear t size={16} /> <span className="ms-1 small">{interactions[currentEpisode.id]?.likes || 0}</span>
+                <Heart size={16} /> <span className="ms-1 small">{interactions[currentEpisode.id]?.likes || 0}</span>
               </button>
 
               <button className="interaction-btn comment-btn" onClick={() => toggleCommentBox(currentEpisode.id)} title="Comments">
